@@ -39,6 +39,9 @@ class WebExtractor:
         Args:
             currency (string): a currency to extract data.
         """
+        self.open_explorer()
+        self.click_cookies_button()
+        
         # Select month average.
         self.driver.find_element_by_name('MA').click()
 
