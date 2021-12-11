@@ -7,6 +7,8 @@ authors = ["Jorge Espinosa <jorge.espinosacam@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.10"
 selenium = "^3.141.0"
+PyYAML = "^6.0"
+pandas = "^1.3.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
