@@ -27,16 +27,35 @@ def remove_files_from(path):
     for file in file_list:
         f = os.path.join(path, file)
         os.remove(f)
-        
+
+def load_file(path):
+    """Loads a single file from the specified path and returns a df
+    """
+    df = pd.read_excel(path,
+                       header=None,
+                       skiprows=2,
+                       index_col=0,
+                       usecols=[0, 1],
+                       names=["YearMonth", "Average"],
+                       parse_dates=True)
+    return df
+    
+
 def load_historical_data(folder):
     """Loads all files from downloads folder into a pandas dataframe
-    1. get all files from downloads folder
-    2. iterate over each file
-        load it into a df
-        merge to main df
-        
-    practice loading a file into a df
     """
-    print(folder)
-    # test = pd.read_csv()
+    file_list = get_fxtop_files(folder)
+    currency_dfs = []
+    currency_header = file_list[1].split("_")[3][:3]
     
+    for file in file_list:
+        currency_dfs.append(load_file(
+            os.path.join(folder, file)
+        ))
+    
+    merged_df = pd.concat(currency_dfs)
+    merged_df.rename({"Average": currency_header}, inplace=True, axis="columns")
+    merged_df.sort_index(inplace=True)
+    
+    remove_files_from(folder)    
+    return merged_df
