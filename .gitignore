@@ -4,3 +4,7 @@
 currency_averages/__pycache__/
 
 tests/__pycache__/
+
+.DS_Store
+
+bck/
