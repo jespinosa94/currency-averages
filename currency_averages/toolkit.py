@@ -2,12 +2,9 @@ import yaml
 import os
 import re
 import pandas as pd
+import logging
 
 
-class Config:
-    def __init__(self):
-        config = read_config("config/config.yaml")
-        self.downloads_folder = config['downloads_folder']
 
 def read_config(path):
     with open(path, "r") as f:
@@ -57,5 +54,15 @@ def load_historical_data(folder):
     merged_df.rename({"Average": currency_header}, inplace=True, axis="columns")
     merged_df.sort_index(inplace=True)
     
+    logging.info("historical data retrieved")
+    
     remove_files_from(folder)    
     return merged_df
+
+def check_folder_exists(folder_route):
+    """Check if directory exists, if not, create it"""
+    
+    if not os.path.isdir(folder_route):
+        os.makedirs(folder_route)
+
+

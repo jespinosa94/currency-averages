@@ -1,9 +1,9 @@
 import web_extractor as we
 import currencies as cur
 import toolkit
+import config
 
-
-config = toolkit.Config()
+config = config.Config()
 currencies = cur.Currencies()
 
 # web_extractor = we.WebExtractor()
