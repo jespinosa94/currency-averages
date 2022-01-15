@@ -38,3 +38,9 @@ class Currencies:
         self.currencies.to_csv(self.backup_dir+"currencies"+date_formatted+".csv",
                                sep=";")
         logging.info("backup file created")
+        
+    def detect_new_currencies(self, db_currencies):
+        current_currencies = self.currencies.columns.values
+        new_currencies = set(db_currencies) - set(current_currencies)
+        logging.info("new currencies detected: {0}".format(new_currencies))
+        return new_currencies

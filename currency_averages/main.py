@@ -6,6 +6,7 @@ import config
 
 config = config.Config()
 currencies = cur.Currencies()
+currencies.detect_new_currencies(['USD', 'GBP', 'JPY'])
 
 # web_extractor = we.WebExtractor()
 # web_extractor.extract_historical_data("USD")
