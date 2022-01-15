@@ -2,6 +2,7 @@ import pandas as pd
 from datetime import datetime
 import os
 import logging
+import toolkit
 
 class Currencies:
     def __init__(self):
@@ -15,6 +16,7 @@ class Currencies:
             last_file = file_list[0]
             backup = pd.read_csv(os.path.join(self.backup_dir, last_file),
                                  sep=";",
+                                 parse_dates=True,
                                  index_col=0)
             
             logging.info("{0} backup restored".format(last_file))
@@ -24,13 +26,15 @@ class Currencies:
             return pd.DataFrame()
         
         
-    def append_currency(self, df_new_currency):
+    def append_currency(self, df_new_currency, new_currency):
         self.currencies = pd.concat([self.currencies, df_new_currency],
                                     axis=1)
-        print("Merged dataframes")
+        
+        logging.info("{0} dataframe included".format(new_currency))
         
     def save_backup(self):
+        toolkit.check_folder_exists(self.backup_dir)
         date_formatted = datetime.now().strftime("%Y%m%d_%H%M")
         self.currencies.to_csv(self.backup_dir+"currencies"+date_formatted+".csv",
                                sep=";")
-        print("Backup created")
+        logging.info("backup file created")

@@ -54,10 +54,11 @@ def load_historical_data(folder):
     merged_df.rename({"Average": currency_header}, inplace=True, axis="columns")
     merged_df.sort_index(inplace=True)
     
-    logging.info("historical data retrieved")
+    currency = merged_df.columns.values[0]
     
-    remove_files_from(folder)    
-    return merged_df
+    logging.info("{0} historical data retrieved".format(currency))
+    
+    return merged_df, currency
 
 def check_folder_exists(folder_route):
     """Check if directory exists, if not, create it"""
