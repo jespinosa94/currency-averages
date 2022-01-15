@@ -1,1 +1,2 @@
 downloads_folder: /Users/jorge/Downloads
+test_logging: true  # if set to true, it will output logging to a test file

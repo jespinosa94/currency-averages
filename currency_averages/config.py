@@ -7,6 +7,7 @@ class Config:
     def __init__(self):
         config = toolkit.read_config("config/config.yaml")
         self.downloads_folder = config['downloads_folder']
+        self.test_logging = config['test_logging']
         self.configure_logging()
         
     def configure_logging(self):
@@ -22,9 +23,9 @@ class Config:
         logger.setLevel(logging.DEBUG)
         
         # create file handler and set level to debug
-        now = datetime.now().strftime("%Y-%m-%d %H%M%S")
+        log_file = "test" if self.test_logging else datetime.now().strftime("%Y-%m-%d %H%M%S")
         toolkit.check_folder_exists("logs")
-        file_handler = logging.FileHandler('logs/'+now+'.log', 'w', encoding='utf-8', )
+        file_handler = logging.FileHandler('logs/'+log_file+'.log', 'w', encoding='utf-8', )
         file_handler.setLevel(logging.DEBUG)
         
         # create formatter

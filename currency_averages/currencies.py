@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import datetime
 import os
+import logging
 
 class Currencies:
     def __init__(self):
@@ -12,10 +13,14 @@ class Currencies:
             file_list = os.listdir(self.backup_dir)
             file_list.sort(reverse=True)
             last_file = file_list[0]
-            backup = pd.read_csv(os.path.join(self.backup_dir, last_file))
+            backup = pd.read_csv(os.path.join(self.backup_dir, last_file),
+                                 sep=";",
+                                 index_col=0)
+            
+            logging.info("{0} backup restored".format(last_file))
             return backup
         except:
-            print("No backup file found, creating empty Dataframe")
+            logging.warning("No backup file found, creating empty Dataframe")
             return pd.DataFrame()
         
         
