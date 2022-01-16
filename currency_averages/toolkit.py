@@ -58,6 +58,7 @@ def load_historical_data(folder):
     
     logging.info("{0} historical data retrieved".format(currency))
     
+    remove_files_from(folder)    
     return merged_df, currency
 
 def check_folder_exists(folder_route):

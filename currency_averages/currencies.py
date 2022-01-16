@@ -8,6 +8,7 @@ class Currencies:
     def __init__(self):
             self.backup_dir = "bck/"
             self.currencies = self.load_backup()
+            self.new_currencies = {}
             
     def load_backup(self):
         try:
@@ -42,5 +43,7 @@ class Currencies:
     def detect_new_currencies(self, db_currencies):
         current_currencies = self.currencies.columns.values
         new_currencies = set(db_currencies) - set(current_currencies)
+        
         logging.info("new currencies detected: {0}".format(new_currencies))
-        return new_currencies
+        
+        self.new_currencies = new_currencies

@@ -6,11 +6,14 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+import toolkit
+import logging
 
 
 class WebExtractor:
-    def __init__(self):
+    def __init__(self, downloads_folder):
         self.driver = webdriver.Chrome('/Users/jorge/Documents/chromedriver')
+        toolkit.remove_files_from(downloads_folder)
     
     def open_explorer(self):
         self.driver.get("https://fxtop.com/dev/submithisto.php")

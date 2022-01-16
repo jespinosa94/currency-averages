@@ -20,7 +20,7 @@ class Config:
             """
         # create logger
         logger = logging.getLogger()
-        logger.setLevel(logging.DEBUG)
+        logger.setLevel(logging.INFO)
         
         # create file handler and set level to debug
         log_file = "test" if self.test_logging else datetime.now().strftime("%Y-%m-%d %H%M%S")
