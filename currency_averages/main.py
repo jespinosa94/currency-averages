@@ -16,7 +16,8 @@ for currency in currencies.new_currencies:
     web_extractor.extract_historical_data(currency)
     df_new_currency, new_currency = toolkit.load_historical_data(config.downloads_folder)
     currencies.append_currency(df_new_currency, new_currency)
-    
+ 
+web_extractor.extract_last_months(currencies.currencies.columns.values)   
 
 currencies.save_backup()
 

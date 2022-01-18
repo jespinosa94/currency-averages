@@ -1,5 +1,6 @@
 from datetime import date, timedelta
 import calendar
+import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
@@ -19,7 +20,7 @@ class WebExtractor:
         self.driver.get("https://fxtop.com/dev/submithisto.php")
     
     def close_explorer(self):
-        WebDriverWait(self.driver, 5)
+        time.sleep(5)
         self.driver.close()  
     
     def click_cookies_button(self):
@@ -102,6 +103,73 @@ class WebExtractor:
             start_date = end_date + timedelta(days=1)
             end_date = date(start_date.year, 12, 31)
             
+            button_download.click()
+            
+        self.close_explorer()
+        
+        
+    def extract_last_months(self, currencies):
+        """Extracts the last 12 months of each currency.
+
+        Args:
+            currencies (list): each currency.
+        """
+        self.open_explorer()
+        self.click_cookies_button()
+        
+        # Select month average.
+        self.driver.find_element_by_name('MA').click()
+
+        # Select excel output.
+        excel_xpath = '/html/body/form/table/tbody/tr[13]/td[2]/input[2]'
+        self.driver.find_element_by_xpath(excel_xpath).click()
+
+        # Set download button
+        button_download_xpath = '/html/body/form/table/tbody/tr[14]/td[2]/input'
+        button_download = WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, button_download_xpath))
+        )
+
+        # Source currency.
+        select_source_currency = Select(self.driver.find_element_by_name('C1'))
+        select_source_currency.select_by_value('EUR')
+        
+
+        # Declare date form elements.
+        form_start_day = self.driver.find_element_by_id('DD1')
+        form_start_month = self.driver.find_element_by_id('MM1')
+        form_start_year = self.driver.find_element_by_id('YYYY1')
+        form_end_day = self.driver.find_element_by_id('DD2')
+        form_end_month = self.driver.find_element_by_id('MM2')
+        form_end_year = self.driver.find_element_by_id('YYYY2')
+
+        # Dates declaration.
+        today = date(date.today().year, 
+                    date.today().month, 
+                    calendar.monthrange(date.today().year, 
+                                        date.today().month)
+                    [-1])
+        start_date = date(today.year - 1, today.month, today.day)
+        end_date = today
+
+        form_start_day.clear()
+        form_start_day.send_keys('{:02d}'.format(start_date.day))
+        form_start_month.clear()
+        form_start_month.send_keys('{:02d}'.format(start_date.month))
+        form_start_year.clear()
+        form_start_year.send_keys(start_date.year)
+        
+        form_end_day.clear()
+        form_end_day.send_keys('{:02d}'.format(end_date.day))
+        form_end_month.clear()
+        form_end_month.send_keys('{:02d}'.format(end_date.month))
+        form_end_year.clear()
+        form_end_year.send_keys(end_date.year)
+        
+        # Target currency and download each one
+        for currency in currencies:
+            select_target_currency = Select(self.driver.find_element_by_name('C2'))
+            select_target_currency.select_by_value(currency)
             button_download.click()
             
         self.close_explorer()
