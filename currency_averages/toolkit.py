@@ -61,6 +61,29 @@ def load_historical_data(folder):
     remove_files_from(folder)    
     return merged_df, currency
 
+def load_last_months(folder, currencies):
+    """Loads each file corresponding to a currency and updates the final
+    currency values.
+    """
+    file_list = get_fxtop_files(folder)
+    result = currencies.currencies
+    
+    for file in file_list:
+        # 'FXTOP_PRICES_EUR_GBP.xlsx' --> GBP.xlsx --> GBP
+        currency_header = file.split('_')[3].split('.')[0]
+        df_new = load_file(os.path.join(folder, file))
+        df_new.rename({"Average": currency_header}, inplace=True, axis="columns")
+        result = pd.concat([result, df_new])
+        # Adds only new months to the dataframe
+        result = result[~result.index.duplicated(keep='first')]
+        
+        # Override past months
+        result.update(df_new)
+        
+    currencies.currencies = result
+    logging.info("updated last 12 months of all currencies")
+    pass
+
 def check_folder_exists(folder_route):
     """Check if directory exists, if not, create it"""
     

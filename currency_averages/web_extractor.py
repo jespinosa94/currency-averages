@@ -172,5 +172,7 @@ class WebExtractor:
             select_target_currency.select_by_value(currency)
             button_download.click()
             
+        logging.info("downloaded last months of each currency")
+            
         self.close_explorer()
 
