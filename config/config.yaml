@@ -1,2 +1,5 @@
 downloads_folder: /Users/jorge/Downloads
-test_logging: true  # if set to true, it will output logging to a test file
+backup_folder: bck/
+test_logging: True  # if set to true, it will output logging to a test file
+enable_downloader: True # download files from web
+enable_remove_files: True # remove files from download folder

@@ -2,20 +2,22 @@ from datetime import date, timedelta
 import calendar
 import time
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-import toolkit
 import logging
 
 
 class WebExtractor:
-    def __init__(self, downloads_folder):
-        self.driver = webdriver.Chrome('/Users/jorge/Documents/chromedriver')
-        toolkit.remove_files_from(downloads_folder)
-    
+    def __init__(self, config):
+        if config.enable_downloader:
+            self.driver = webdriver.Chrome('/Users/jorge/Documents/chromedriver')
+        else:
+            logging.info("web explorer extraction disabled")
+
+        self.config = config
+
     def open_explorer(self):
         self.driver.get("https://fxtop.com/dev/submithisto.php")
     
@@ -37,12 +39,15 @@ class WebExtractor:
             print("The object can't be found, probably the dialog changed.")
         cookies_button.click()
 
-    def extract_historical_data(self, currency):
+    def extract_currency(self, currency):
         """Extracts the historical data of a currency in files of 12 months.
 
         Args:
             currency (string): a currency to extract data.
         """
+        if not self.config.enable_downloader:
+            return
+
         self.open_explorer()
         self.click_cookies_button()
         
@@ -114,6 +119,8 @@ class WebExtractor:
         Args:
             currencies (list): each currency.
         """
+        if not self.config.enable_downloader: return
+
         self.open_explorer()
         self.click_cookies_button()
         
@@ -149,7 +156,7 @@ class WebExtractor:
                     calendar.monthrange(date.today().year, 
                                         date.today().month)
                     [-1])
-        start_date = date(today.year - 1, today.month, today.day)
+        start_date = date(today.year - 1, today.month, 1)
         end_date = today
 
         form_start_day.clear()
