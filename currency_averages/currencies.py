@@ -6,6 +6,7 @@ class Currencies:
     def __init__(self, backup):
             self.currencies = backup
             self.new_currencies = {}
+            self.inverse_currencies = pd.DataFrame()
 
     def append_currency(self, df_new_currency, new_currency):
         if new_currency is not None:

@@ -10,6 +10,7 @@ import web_extractor as we
 class Orchestrator:
     """Orchestrates all actions between the currencies, the web extractor
     and the files in the system."""
+
     def __init__(self, config):
         self.config = config
         self.currencies = cur.Currencies(self.load_backup())
@@ -143,9 +144,35 @@ class Orchestrator:
         date_formatted = datetime.now().strftime("%Y%m%d_%H%M")
         self.currencies.currencies.to_csv(self.config.backup_folder
                                           + "currencies"
-                                          + date_formatted+".csv",
+                                          + date_formatted + ".csv",
                                           sep=";")
         logging.info("backup file created")
 
     def close_program(self):
         logging.info("program finished")
+
+    def create_inverse_matrix(self):
+        self.currencies.inverse_currencies = 1 / self.currencies.currencies
+        logging.info("inverted currency matrix")
+
+    def export_master(self):
+        result = self.currencies.inverse_currencies.melt(ignore_index=False,
+                                                         var_name="Currency",
+                                                         value_name="MonthCurrency")
+
+        result['Year'] = result.index.year
+        result['Month'] = result.index.month
+        result['YearCurrency'] = result.groupby(['Year', 'Currency'])['MonthCurrency'].transform(
+            'mean')
+
+        cols = ['Year', 'Month', 'Currency', 'MonthCurrency', 'YearCurrency']
+        result = result[cols]
+
+        self.check_folder_exists(self.config.output_folder)
+        date_formatted = datetime.now().strftime("%Y%m")
+        result.to_csv(self.config.output_folder
+                      + "maestro_currency_"
+                      + date_formatted + "01" + ".txt",
+                      sep="\t",
+                      index=False)
+        logging.info("Master table created")

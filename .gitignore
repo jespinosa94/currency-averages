@@ -10,3 +10,5 @@ tests/__pycache__/
 bck/
 
 logs/
+
+output/

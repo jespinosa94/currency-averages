@@ -1,5 +1,8 @@
 downloads_folder: /Users/jorge/Downloads
 backup_folder: bck/
+output_folder: output/
+
+# Testing Parameters (do not touch unless developing)
 test_logging: True  # if set to true, it will output logging to a test file
-enable_downloader: True # download files from web
+enable_downloader: False # download files from web
 enable_remove_files: True # remove files from download folder

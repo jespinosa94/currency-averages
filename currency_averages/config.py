@@ -12,6 +12,7 @@ class Config:
         self.test_logging = config['test_logging']
         self.enable_downloader = config['enable_downloader']
         self.enable_remove_files = config['enable_remove_files']
+        self.output_folder = config['output_folder']
         self.configure_logging()
 
     @staticmethod
