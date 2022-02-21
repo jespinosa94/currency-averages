@@ -128,8 +128,8 @@ class Orchestrator:
         self.currencies.detect_new_currencies(new_currencies)
 
     def extract_historical_from_new_currencies(self):
-        historical_we = we.WebExtractor(self.config)
         for currency in self.currencies.new_currencies:
+            historical_we = we.WebExtractor(self.config)
             historical_we.extract_currency(currency)
             df_new_currency, new_currency = self.__load_historical_data()
             self.currencies.append_currency(df_new_currency, new_currency)

@@ -12,7 +12,7 @@ import logging
 class WebExtractor:
     def __init__(self, config):
         if config.enable_downloader:
-            self.driver = webdriver.Chrome('/Users/jorge/Documents/chromedriver')
+            self.driver = webdriver.Chrome(config.chromedriver_folder)
         else:
             logging.info("web explorer extraction disabled")
 

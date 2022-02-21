@@ -1,8 +1,9 @@
-downloads_folder: /Users/jorge/Downloads
+downloads_folder: C:\Users\jorge.espinosa\Downloads
 backup_folder: bck/
 output_folder: output/
+chromedriver_folder: C:\Users\jorge.espinosa\Documents\chromedriver.exe
 
 # Testing Parameters (do not touch unless developing)
 test_logging: True  # if set to true, it will output logging to a test file
-enable_downloader: False # download files from web
+enable_downloader: True # download files from web
 enable_remove_files: True # remove files from download folder
